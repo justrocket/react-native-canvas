@@ -7,10 +7,12 @@ const Node = {
   map: transform => node => {
     const transformed = transform(node);
     const {childNodes} = transformed;
-    return {
-      ...transformed,
-      childNodes: childNodes && childNodes.map(Node.map(transform)),
-    };
+    const res = Object.keys(transformed).reduce((s, k) => {
+      s[k] = transformed[k];
+      return s;
+    }, {})
+    res.childNodes= childNodes && childNodes.map(Node.map(transform));
+    return res;
   },
 };
 
